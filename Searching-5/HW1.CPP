@@ -3,59 +3,30 @@ class Solution
 public:
     double findMedianSortedArrays(vector<int> &nums1, vector<int> &nums2)
     {
-        int m = nums1.size();
-        int n = nums2.size();
-        int arr[m + n];
-        int i = 0, j = 0, k = 0;
-        double med;
-        while (i < m && j < n)
+        int m=nums1.size(),n=nums2.size();
+    if(m>n)
+        return findMedianSortedArrays(nums2,nums1);
+    int s=0,e=m;
+    while(low<=high)
+    {
+        int aMid=s+(e-s)/2;
+        int bMid=((m+n+1)/2)-aMid;
+        int aLeft=(aMid==0)?INT_MIN:nums1[aMid-1];
+        int bLeft=(bMid==0)?INT_MIN:nums2[bMid-1];
+        int aRight=(aMid==m)?INT_MAX:nums1[aMid];
+        int bRight=(bMid==n)?INT_MAX:nums2[bMid];
+        if(aLeft <= bRight && bLeft < aRight)
         {
-            if (nums1[i] < nums2[j])
-            {
-                arr[k] = nums1[i];
-                i++;
+            if((m + n) % 2 == 1){
+                return max(aLeft, bLeft);
             }
-            else if (nums1[i] == nums2[j])
-            {
-                arr[k] = nums1[i];
-                k++;
-                arr[k] = nums2[j];
-                i++;
-                j++;
-            }
-            else
-            {
-                arr[k] = nums2[j];
-                j++;
-            }
-            k++;
+            return (max(aLeft, bLeft) + min(aRight, bRight)) / 2.0;
         }
-        while (i < m)
-        {
-            arr[k] = nums1[i];
-            i++;
-            k++;
-        }
-        while (j < n)
-        {
-            arr[k] = nums2[j];
-            j++;
-            k++;
-        }
-
-        if ((m + n) % 2 == 0)
-        {
-            int mid = (m + n) / 2;
-            double p = arr[mid];
-            double q = arr[mid - 1];
-            med = (p + q) / 2;
-        }
-        else if ((m + n) % 2 != 0)
-        {
-            int mid = (m + n - 1) / 2;
-            med = arr[mid];
-        }
-
-        return med;
+        if(aLeft>bRight)
+            e=aMid-1;
+        else
+            s=aMid+1;
+    }
+    return -1;
     }
 };
