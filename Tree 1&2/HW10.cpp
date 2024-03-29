@@ -14,7 +14,7 @@ public:
 
     //     return;
     // }
-    vector<int> bottomView(Node *root)
+    vector<int> botomView(Node *root)
     {
         vector<int> ans;
         if (root == NULL)
